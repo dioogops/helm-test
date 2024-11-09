@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unifica
+  namespace: unifica
+spec:
+  selector:
+    matchLabels:
+      app: unifica
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: unifica
+        env: local
+    spec:
+      containers:
+        - name: unifica
+          image: api-dry-k8s:1.3
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: 50m
+              memory: 512Mi
+            limits:
+              cpu: 512m
+              memory: 1Gi
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_CONNECTION
+              value: "pgsql"
+            - name: DB_HOST
+              value: "psql-test-postgresql.default.svc.cluster.local"
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_DATABASE
+              value: postgres
+            - name: DB_USERNAME
+              value: postgres
+            - name: DB_PASSWORD
+              value: "hW8NPX65V0"
+            
+# DB_CONNECTION=pgsql
+# DB_HOST=psql-test-postgresql.default.svc.cluster.local
+# DB_PORT=5432
+# DB_DATABASE=postgres
+# DB_USERNAME=postgres
+# DB_PASSWORD=hW8NPX65V0
